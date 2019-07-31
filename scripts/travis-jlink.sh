@@ -41,7 +41,7 @@ export JAVA_HOME
 sbt cli/universal:packageBin
 
 export REPO="coursier/coursier"
-export NAME="standalone-${LAUNCHER_OS}"
+export NAME="standalone-${LAUNCHER_OS}.zip"
 export CMD="cp modules/cli/target/universal/standalone.zip \$OUTPUT #"
 export HAS_BAT=false
 scripts/upload-launcher/upload-gh-release.sh
