@@ -1,6 +1,21 @@
 #!/usr/bin/env bash
 set -e
 
+#### DEBUG
+
+GPG_OPTS="--batch=true --yes"
+if [[ "$TRAVIS_OS_NAME" == "osx" || "$TRAVIS_OS_NAME" == "windows" ]]; then
+  GPG_OPTS="$GPG_OPTS --pinentry-mode loopback"
+fi
+
+echo "Import GPG key"
+echo "$PGP_SECRET" | base64 --decode | gpg $GPG_OPTS --import
+
+# test run
+gpg $GPG_OPTS --passphrase "$PGP_PASSPHRASE" --detach-sign --armor --use-agent --output ".travis.yml.asc" ".travis.yml"
+
+####
+
 export JABBA_HOME="$HOME/.jabba" JABBA_JDK="openjdk@1.11.0-2"
 
 if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then
