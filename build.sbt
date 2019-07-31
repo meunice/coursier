@@ -290,7 +290,8 @@ lazy val cli = project("cli")
       "--output", target.in(jlinkBuildImage).value.getAbsolutePath
     ),
     maintainer := developers.value.head.email,
-    packageName.in(Universal) := "standalone"
+    packageName.in(Universal) := "standalone",
+    topLevelDirectory.in(Universal) := Some(s"coursier-${version.value}")
   )
 
 lazy val `cli-graalvm` = project("cli-graalvm")

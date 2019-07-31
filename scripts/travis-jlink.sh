@@ -45,3 +45,6 @@ export NAME="standalone-${LAUNCHER_OS}.zip"
 export CMD="cp modules/cli/target/universal/standalone.zip \$OUTPUT #"
 export HAS_BAT=false
 scripts/upload-launcher/upload-gh-release.sh
+
+# try to find zombie / daemons (must be killed for the job to exit)
+ps -ef
