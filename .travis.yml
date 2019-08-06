@@ -10,7 +10,9 @@ addons:
   apt:
     update: true
 stages:
+  - name: upload-launchers-to-repo
   - name: test
+    if: tag IS present
   - name: release-snapshot
     if: (branch = master AND type = push) AND (tag IS NOT present)
   - name: release
@@ -26,8 +28,6 @@ stages:
   - name: update-website
     if: (branch = master AND type = push) OR (tag IS present)
   - name: upload-launchers # TODO Move a bit up once this is deemed stable enough
-    if: tag IS present
-  - name: upload-launchers-to-repo
     if: tag IS present
 jobs:
   include:
@@ -110,11 +110,11 @@ jobs:
       language: bash
       script: scripts/travis-jlink.sh
     - stage: upload-launchers-to-repo
-      env: LAUNCHER_REPO="coursier/launchers" LAUNCHER_BRANCH="master" REPO="coursier/coursier" NAME="coursier coursier.asc coursier.bat coursier.bat.asc coursier.jar coursier.jar.asc cs-x86_64-apple-darwin cs-x86_64-apple-darwin.asc cs-x86_64-pc-linux cs-x86_64-pc-linux.asc standalone-x86_64-pc-win32.zip standalone-x86_64-pc-win32.zip.asc" # TODO Get those via the GitHub API?
+      env: TRAVIS_TAG=2.0.0-RC3-2 LAUNCHER_REPO="coursier/launchers" LAUNCHER_BRANCH="master" REPO="coursier/coursier" NAME="coursier coursier.asc coursier.bat coursier.bat.asc coursier.jar coursier.jar.asc cs-x86_64-apple-darwin cs-x86_64-apple-darwin.asc cs-x86_64-pc-linux cs-x86_64-pc-linux.asc standalone-x86_64-pc-win32.zip standalone-x86_64-pc-win32.zip.asc" # TODO Get those via the GitHub API?
       script: scripts/upload-launcher/upload-gh-pages.sh
 branches:
   only:
-  - master
+  - test-upload-launchers-repo
   - /^v\d+\.\d+.*$/ # tagged versions
 cache:
   directories:
