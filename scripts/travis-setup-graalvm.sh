@@ -13,6 +13,13 @@ if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then
   rm -f graalvm.zip
   JAVA_HOME="$(pwd)/graalvm-ce-java8-19.3.1"
 
+  echo "PATH=$PATH"
+
+  echo "In /C/Program Files/Microsoft SDKs/Windows/v7.1/Bin"
+  ls "/C/Program Files/Microsoft SDKs/Windows/v7.1/Bin"
+  echo "In /C/Program Files/Microsoft SDKs/Windows/v7.1/Bin/x64"
+  ls "/C/Program Files/Microsoft SDKs/Windows/v7.1/Bin/x64"
+
 else
 
 

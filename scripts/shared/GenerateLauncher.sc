@@ -27,6 +27,13 @@ def nativeImage(
 
   val cp = Util.output(cpCmd).trim
 
+  if (Util.os == "linux")
+    try Util.run(Seq("ps", "aux", "--sort", "-rss"))
+    catch {
+      case e: Throwable =>
+        System.err.println(s"Ignoring $e")
+    }
+
   val cmd = Seq(
     coursierLauncher,
     "launch",

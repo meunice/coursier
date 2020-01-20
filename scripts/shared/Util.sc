@@ -171,8 +171,7 @@ def withTmpDir[T](prefix: String)(f: Path => T): T = {
     f(tmpDir)
   } finally {
     if (tmpDir != null) {
-      System.err.println(s"Deleting $tmpDir")
-      deleteRecursively(tmpDir)
+      System.err.println(s"NOT deleting $tmpDir")
     }
   }
 }

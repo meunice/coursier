@@ -25,6 +25,12 @@ private def initialLauncher(
 
   def packLauncher: String = {
     val path = "modules/cli/target/pack/bin/coursier"
+    if (Util.os == "win") {
+      System.err.println("Env:")
+      for ((k, v) <- sys.env.toVector.sorted if !k.startsWith("PGP") && !k.startsWith("SONATYPE") && !k.contains("TOKEN"))
+        System.err.println(s"  $k=$v")
+      System.err.println()
+    }
     if (!Files.exists(Paths.get(path)))
       Util.run(Seq("sbt", "cli/pack"))
     path
@@ -49,7 +55,7 @@ private def initialLauncher(
 private val pgpPassphrase = Option(System.getenv("PGP_PASSPHRASE"))
 private val pgpSecret = Option(System.getenv("PGP_SECRET"))
 
-private val dryRun = false
+private val dryRun = true
 
 private def doWaitForSync(
   initialLauncher: String,
@@ -66,7 +72,7 @@ private def doWaitForSync(
 @main
 def uploadJavaLauncher(): Unit = {
 
-  val token = if (dryRun) "" else ghToken()
+  val token = if (dryRun) Option(System.getenv("TMP_GH_TOKEN")).getOrElse("") else ghToken()
 
   val initialLauncher0 = initialLauncher(None, None)
 
@@ -131,7 +137,7 @@ def uploadJavaLauncher(): Unit = {
 
 @main
 def uploadAssembly(): Unit = {
-  val token = if (dryRun) "" else ghToken()
+  val token = if (dryRun) Option(System.getenv("TMP_GH_TOKEN")).getOrElse("") else ghToken()
   val initialLauncher0 = initialLauncher(None, None)
   val assembly = "./coursier.jar"
   val version = Version.latestFromTravisTag
@@ -177,19 +183,21 @@ def uploadAssembly(): Unit = {
 
 @main
 def uploadNativeImage(): Unit = {
-  val token = if (dryRun) "" else ghToken()
+  val token = if (dryRun) Option(System.getenv("TMP_GH_TOKEN")).getOrElse("") else ghToken()
   val initialLauncher0 = initialLauncher(None, None)
   val dest = "./cs"
   val version = Version.latestFromTravisTag
+  val tmpVersion = "2.0.0-SNAPSHOT"
   val q =
     if (Util.os == "win") "\\\""
     else "\""
-  Util.run(Seq("sbt", s"""set version in ThisBuild := $q$version$q""", "publishLocal"))
+  val projs = Seq("bootstrap", "utilJVM", "coreJVM", "cacheJVM", "coursierJVM", "install", "publish", "cli")
+  Util.run(Seq("sbt", s"""set version in ThisBuild := $q$tmpVersion$q""") ++ projs.map(p => s"$p/publishLocal"))
   GenerateLauncher.nativeImage(
     initialLauncher0,
-    module = s"io.get-coursier::coursier-cli:$version",
+    module = s"io.get-coursier::coursier-cli:$tmpVersion",
     extraArgs = Seq(
-      "--no-default",
+      // "--no-default",
       "-r", "central",
       "-r", "typesafe:ivy-releases",
     ),

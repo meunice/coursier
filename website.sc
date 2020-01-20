@@ -12,7 +12,7 @@ private def ghToken() = Option(System.getenv("GH_TOKEN")).getOrElse {
   sys.error("GH_TOKEN not set")
 }
 
-private val dryRun = false
+private val dryRun = true
 
 @main
 def generate() =

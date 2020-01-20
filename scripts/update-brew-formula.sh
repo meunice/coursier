@@ -46,6 +46,6 @@ if git status | grep "nothing to commit" >/dev/null 2>&1; then
 else
   git commit -m "$MSG"
 
-  echo "Pushing changes"
-  git push origin master
+  echo "NOT pushing changes (dry run)"
+  # git push origin master
 fi
