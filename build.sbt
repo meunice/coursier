@@ -165,6 +165,7 @@ lazy val cache = crossProject("cache")(JSPlatform, JVMPlatform)
     shadeNamespaces ++= Set("io.github.soc"),
     addPathsSources,
     libraryDependencies ++= Seq(
+      Deps.svm % Provided,
       Deps.jansi % "shaded",
       Deps.jlineTerminalJansi % "shaded"
     ),
