@@ -43,7 +43,7 @@ object Deps {
   def simulacrum       = ivy"org.typelevel::simulacrum:1.0.0"
   def slf4JNop         = ivy"org.slf4j:slf4j-nop:1.7.31"
   def svm              = ivy"org.graalvm.nativeimage:svm:$graalVmVersion"
-  def svmSubs          = ivy"org.scalameta::svm-subs:20.1.0"
+  def svmSubs          = ivy"org.scalameta::svm-subs:20.2.0"
   def utest            = ivy"com.lihaoyi::utest::0.7.5"
   def windowsAnsi      = ivy"io.github.alexarchambault.windows-ansi:windows-ansi:0.0.3"
 }
@@ -54,23 +54,23 @@ object Versions {
   def jniUtils = "0.2.2"
   def jsoniterScala = "2.9.1"
   def monadless = "0.0.13"
-  def scalaz = "7.2.32"
+  def scalaz = "7.2.33"
 }
 
 def sbtCoursierVersion = "2.0.8"
 
-def graalVmVersion = "20.1.0"
+def graalVmVersion = "21.1.0"
 
 // should be the default index in the upcoming coursier release (> 2.0.16)
 def jvmIndex = "https://github.com/coursier/jvm-index/raw/master/index.json"
 
 object ScalaVersions {
-  def scala213 = "2.13.3"
-  def scala212 = "2.12.12"
+  def scala213 = "2.13.6"
+  def scala212 = "2.12.14"
   val all = Seq(scala213, scala212)
 
   // only used by the launcher module
   def scala211 = "2.11.12"
 
-  def scalaJs = "1.2.0"
+  def scalaJs = "1.5.1"
 }
